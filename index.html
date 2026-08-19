@@ -128,11 +128,12 @@ p{margin:0 0 14px;}
 .tag{font-family:'JetBrainsMono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   background:var(--linha);color:var(--suave);border-radius:999px;padding:9px 15px;}
 .tag.viva{color:var(--verde);}
-.medalhas{display:flex;gap:12px;}
-.medalha{flex:1;aspect-ratio:1/1;max-height:88px;border-radius:22px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:3px;}
-.medalha .sigla{font-family:'ArchivoBlack',Impact,sans-serif;font-size:20px;}
-.medalha .leg{font-family:'JetBrainsMono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;}
+.medalhas{display:flex;gap:8px;}
+.medalha{flex:1 1 0;min-width:0;aspect-ratio:1/1;max-height:70px;border-radius:18px;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px;}
+.medalha .sigla{font-family:'ArchivoBlack',Impact,sans-serif;font-size:17px;line-height:1;}
+.medalha .leg{font-family:'JetBrainsMono',monospace;font-size:7px;letter-spacing:.06em;
+  text-transform:uppercase;text-align:center;line-height:1.1;}
 .medalha.ganha{background:var(--verde);color:var(--noite);}
 .medalha.aberta{border:2px dashed var(--linha);color:var(--suave);}
 
@@ -258,6 +259,27 @@ var CASOS = {
         ]
       },
       {
+      titulo:"O aparelho de pulso",
+      situacao:"Marta chega orgulhosa: comprou um medidor de pulso na farmácia e agora mede a pressão umas dez vezes por dia, sempre que fica nervosa. No caderninho, só anota os valores altos, porque \"os bons não servem para nada\".",
+      opcoes:[
+      { texto:"Explicar que o aparelho de pulso é menos confiável, orientar a troca por um de braço validado, ensinar a técnica e combinar o esquema correto: duas medidas de manhã e duas à noite, por sete dias, anotando todas.",
+      certa:true, pontos:25, delta:{},
+      fb:"Repare que os números não se moveram nesta consulta — e não deveriam. Medir corretamente não baixa pressão, mas sem isso todas as outras decisões saem erradas. A medida residencial pede aparelho de braço validado, repouso de 3 a 5 minutos antes, sentada, pernas descruzadas e braço apoiado na altura do coração. E vale a média de todas as medidas, não a coleção das piores.",
+      fisio:"Ensinar técnica de medida e orientar respiração e relaxamento nos momentos de ansiedade é atuação direta. Medir dez vezes por dia quando está nervosa produz um retrato falso e alimenta a própria ansiedade.",
+      fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+      { texto:"Orientar só a troca do aparelho, mantendo a rotina de medir sempre que sentir ansiedade e anotar os valores altos.",
+      certa:false, pontos:8, delta:{},
+      fb:"A troca do aparelho resolve metade. Medir de forma aleatória e registrar só os piores valores continua produzindo um retrato distorcido, que pode levar o médico a decisões erradas sobre a dose.",
+      fisio:"",
+      fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+      { texto:"Dizer que o aparelho de pulso está bom e que medir sempre que sentir sintoma deixa ela mais tranquila.",
+      certa:false, pontos:-10, delta:{},
+      fb:"Aparelho de pulso depende muito da posição do braço e erra com facilidade. E medir a cada susto não tranquiliza: cria um ciclo de checagem que aumenta a ansiedade e, com ela, os valores registrados.",
+      fisio:"",
+      fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." }
+      ]
+      },
+      {
         titulo:"\"Posso parar o remédio?\"",
         situacao:"Três meses depois. A pressão de Marta caiu bastante. Animada, ela pergunta se agora já pode parar o comprimido, já que está tudo indo bem sem ele.",
         opcoes:[
@@ -375,6 +397,27 @@ var CASOS = {
             fisio:"",
             fonte:"Diretriz da Sociedade Brasileira de Diabetes, edição 2025." }
         ]
+      },
+      {
+      titulo:"O mal-estar no meio da caminhada",
+      situacao:"Jorge começou a caminhar antes de pegar a van. Na última sessão sentiu tremor, suor frio e tontura e teve que parar. Está com medo de continuar e pergunta o que fazer se acontecer de novo.",
+      opcoes:[
+      { texto:"Ensinar a reconhecer os sinais, orientar a medir a glicemia e, se estiver abaixo de 70 mg/dL, aplicar a regra dos 15; ajustar o horário do treino em relação à medicação e sempre levar uma fonte de açúcar rápido junto.",
+      certa:true, pontos:28, delta:{},
+      fb:"Os números não se movem nesta consulta — o que está em jogo aqui é ele poder continuar treinando sem risco. Hipoglicemia é glicemia abaixo de 70 mg/dL, e a conduta é a regra dos 15: 15 g de carboidrato de absorção rápida, esperar 15 minutos e medir de novo. Para quem dirige van escolar, isso não é detalhe.",
+      fisio:"Ajustar o horário do exercício em relação à refeição e à medicação, definir os sinais de interrupção e progredir com segurança é exatamente o que a fisioterapia faz que uma orientação genérica não faz.",
+      fonte:"Diretriz da Sociedade Brasileira de Diabetes, edição 2025." },
+      { texto:"Orientar que, se passar mal, coma alguma coisa e siga treinando igual.",
+      certa:false, pontos:10, delta:{},
+      fb:"O instinto está certo, a dose não. Sem a quantidade definida e sem remedir em 15 minutos, o episódio pode não se corrigir — ou ser corrigido demais, jogando a glicemia para cima depois.",
+      fisio:"",
+      fonte:"Diretriz da Sociedade Brasileira de Diabetes, edição 2025." },
+      { texto:"Orientar que ele diminua por conta própria o remédio do diabetes para não passar mal de novo.",
+      certa:false, pontos:-18, delta:{hba1c:0.3, gli:15},
+      fb:"Não. O caminho é reconhecer o sinal, corrigir a hipoglicemia e relatar o episódio a quem prescreveu — que aí sim pode ajustar. Mexer na dose por fora custa o controle que ele levou meses para conquistar. Veja os números.",
+      fisio:"",
+      fonte:"Diretriz da Sociedade Brasileira de Diabetes, edição 2025." }
+      ]
       },
       {
         titulo:"Qual é a meta?",
@@ -496,6 +539,27 @@ var CASOS = {
         ]
       },
       {
+      titulo:"A balança travou",
+      situacao:"Camila perdeu peso nos últimos meses, mas há três semanas a balança não sai do lugar, mesmo mantendo tudo. Ela chega desanimada, dizendo que fracassou de novo.",
+      opcoes:[
+      { texto:"Explicar que o platô é esperado, que manter o peso perdido já é resultado terapêutico, e mostrar a ela a circunferência abdominal, que continuou caindo mesmo com a balança parada.",
+      certa:true, pontos:26, delta:{ca:-1},
+      fb:"Olhe os dois indicadores: o peso não se moveu e a cintura sim. É a demonstração do que ela precisa entender. O corpo passa a gastar menos energia depois de perder peso, e o platô aparece. Manter os quilos perdidos é o objetivo real do tratamento, e o volume de exercício necessário para NÃO recuperar o peso costuma ser igual ou maior do que o usado para perdê-lo.",
+      fisio:"Ajustar o programa para a fase de manutenção, variando o estímulo e reforçando o trabalho de força para preservar massa magra, é a diferença entre manter o resultado e devolver tudo em seis meses.",
+      fonte:"Diretrizes Brasileiras de Obesidade, ABESO, 2016; Diretriz da Sociedade Brasileira de Diabetes, edição 2025." },
+      { texto:"Dizer para ela manter exatamente a mesma rotina, sem explicar por que a balança parou.",
+      certa:false, pontos:9, delta:{},
+      fb:"Manter a rotina até é adequado. Mas sem entender que o platô é esperado, ela segue achando que fracassou — e essa é a leitura que fez as cinco tentativas anteriores terminarem.",
+      fisio:"",
+      fonte:"Diretrizes Brasileiras de Obesidade, ABESO, 2016." },
+      { texto:"Orientar que ela corte mais calorias e pule refeições para destravar a balança.",
+      certa:false, pontos:-15, delta:{peso:2, ca:1},
+      fb:"Restrição extrema e pular refeições agravam a adaptação do metabolismo e favorecem justamente o reganho, além de aumentar o risco de episódios de compulsão. É o caminho mais curto de volta ao ponto de partida.",
+      fisio:"",
+      fonte:"Diretrizes Brasileiras de Obesidade, ABESO, 2016." }
+      ]
+      },
+      {
         titulo:"O exame que veio junto",
         situacao:"O exame de Camila mostra glicemia de jejum alterada, na faixa de pré-diabetes. Ela pergunta se agora vai ter que tomar remédio para o resto da vida.",
         opcoes:[
@@ -518,13 +582,379 @@ var CASOS = {
       }
     ],
     fecho:"O caso de Camila é o que melhor responde ao título deste jogo: no pré-diabetes, mudar o estilo de vida preveniu mais diabetes do que o remédio."
+  },
+
+  /* ---------------- HIPERTENSÃO E RISCO DE QUEDA ---------------- */
+  neusa: {
+    id:"neusa", nome:"Dona Neusa", inicial:"N", idade:71,
+    condicao:"Hipertensão e risco de queda",
+    resumo:"Mora sozinha, toma cinco medicamentos diferentes e já caiu duas vezes no último ano. Desde a segunda queda parou de ir à feira e de visitar a vizinha, com medo de cair de novo na rua.",
+    medidores:[
+      {meta:140, ch:"pas", rot:"Pressão sistólica", un:"mmHg", ini:148, melhor:"menor"},
+      {meta:12.5, ch:"tug", rot:"Levantar e andar (TUG)", un:"s", ini:19.5, melhor:"menor", dec:1}
+    ],
+    rodadas:[
+      {
+        titulo:"Antes de prescrever, medir",
+        situacao:"Na primeira consulta, Neusa conta que caiu duas vezes neste ano e pergunta se cair não é normal na idade dela. Você precisa decidir por onde começar.",
+        opcoes:[
+          { texto:"Aplicar um teste padronizado de mobilidade e equilíbrio antes de qualquer conduta, para saber o tamanho real do risco dela.",
+            certa:true, pontos:25, delta:{tug:-0.5},
+            fb:"Cair não é normal em nenhuma idade — é sinal de alerta. Medir antes de intervir é o primeiro passo. No teste Levantar e Andar, o ponto de corte validado para pessoas idosas brasileiras é 12,47 segundos: acima disso, o risco de queda está aumentado. Neusa levou 19,5 segundos.",
+            fisio:"Aplicar o teste Levantar e Andar e a Escala de Tinetti é atribuição da fisioterapia. A Tinetti classifica o risco em baixo (24 pontos ou mais), moderado (19 a 23) e alto (abaixo de 19), e é o que define a intensidade do programa.",
+            fonte:"Alexandre TS et al., validação brasileira do Timed Up and Go, 2012; Tinetti ME, Performance-Oriented Mobility Assessment." },
+          { texto:"Já orientar caminhada diária, sem avaliar antes o equilíbrio e a marcha.",
+            certa:false, pontos:8, delta:{tug:-0.3},
+            fb:"Caminhar faz bem, mas mandar caminhar quem já caiu duas vezes, sem saber como está o equilíbrio, pode colocá-la numa situação insegura. Primeiro se mede, depois se prescreve.",
+            fisio:"A diferença entre conselho e prescrição está justamente na avaliação que vem antes.",
+            fonte:"Alexandre TS et al., validação brasileira do Timed Up and Go, 2012." },
+          { texto:"Responder que, com 71 anos, cair de vez em quando é esperado, e tranquilizá-la.",
+            certa:false, pontos:0, delta:{},
+            fb:"Tratar a queda como consequência natural da idade faz o serviço perder a única chance de agir. Queda em pessoa idosa tem causa investigável e intervenção com eficácia demonstrada.",
+            fisio:"",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." }
+        ]
+      },
+      {
+        titulo:"O que prescrever",
+        situacao:"Com o resultado da avaliação na mão, é hora de montar o programa de Neusa.",
+        opcoes:[
+          { texto:"Prescrever programa supervisionado e progressivo de fortalecimento de pernas e treino de equilíbrio, ajustado ao resultado do teste dela.",
+            certa:true, pontos:25, delta:{pas:-4, tug:-2.5},
+            fb:"Força mais equilíbrio é a combinação com melhor resultado na redução de quedas. O Guia de Atividade Física do Ministério da Saúde recomenda de 150 a 300 minutos semanais de atividade moderada para adultos, incluindo quem tem doença crônica, somados a exercícios de força e de equilíbrio.",
+            fisio:"Prescrever treino de equilíbrio estático e dinâmico, fortalecimento de membros inferiores e exercício de dupla tarefa, progredindo conforme a resposta, é o núcleo técnico da fisioterapia aqui.",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." },
+          { texto:"Orientar que ela evite sair de casa até se sentir mais segura.",
+            certa:false, pontos:-12, delta:{tug:3},
+            fb:"Esta é a armadilha do caso. Restringir a atividade por medo de cair alimenta o próprio problema: menos movimento, menos força e equilíbrio, mais risco de queda. Repare no que aconteceu com o tempo dela no teste.",
+            fisio:"O caminho é o oposto: exposição gradual e supervisionada, com distância e complexidade aumentando aos poucos.",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." },
+          { texto:"Entregar um folheto com exercícios para ela fazer sozinha em casa.",
+            certa:false, pontos:6, delta:{tug:-0.5},
+            fb:"Folheto sem demonstração e sem acompanhamento tem adesão baixa e menos segurança em quem já caiu duas vezes. Serve como apoio ao programa, não como substituto dele.",
+            fisio:"",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." }
+        ]
+      },
+      {
+        titulo:"A casa dela",
+        situacao:"Na visita domiciliar você vê tapete solto na sala, piso liso no banheiro sem nada para segurar, e o corredor às escuras à noite.",
+        opcoes:[
+          { texto:"Avaliar o ambiente e orientar mudanças simples: tirar os tapetes soltos, instalar barra de apoio no banheiro, melhorar a luz do corredor e usar calçado fechado com sola antiderrapante.",
+            certa:true, pontos:22, delta:{tug:-1},
+            fb:"Boa parte das quedas em casa acontece por causa de coisas que custam pouco para corrigir. A adaptação do ambiente é medida reconhecida e soma com o treino de força e equilíbrio, não substitui.",
+            fisio:"Avaliar a casa em função da mobilidade real da pessoa é fisioterapia aplicada ao contexto. Barra de apoio na altura errada não ajuda ninguém.",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." },
+          { texto:"Dizer que o problema não é a casa e sim ela prestar mais atenção por onde anda.",
+            certa:false, pontos:0, delta:{},
+            fb:"Isso transfere para ela a responsabilidade por um risco que está no ambiente e que pode ser removido em uma tarde.",
+            fisio:"",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." },
+          { texto:"Indicar bengala imediatamente, sem avaliar a marcha.",
+            certa:false, pontos:5, delta:{tug:-0.2},
+            fb:"Dispositivo de apoio se prescreve depois de avaliar marcha e equilíbrio, e com a altura regulada. Bengala errada atrapalha o padrão da marcha em vez de proteger.",
+            fisio:"",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." }
+        ]
+      },
+      {
+        titulo:"O medo de sair",
+        situacao:"Neusa parou de ir à feira e de visitar a vizinha. Diz que fica mais tranquila em casa, mas admite que está triste e cada vez mais parada.",
+        opcoes:[
+          { texto:"Trabalhar exposição gradual com prática acompanhada — trajetos curtos, depois um pouco mais longos — e explicar a ela a armadilha: o medo diminui o movimento, e menos movimento piora o equilíbrio.",
+            certa:true, pontos:25, delta:{tug:-1.5},
+            fb:"O medo de cair depois de uma queda é tão incapacitante quanto a queda. Ele reduz a atividade, a inatividade tira força e equilíbrio, e isso aumenta o risco real de cair de novo. A intervenção precisa quebrar esse ciclo, não só treinar músculo.",
+            fisio:"Reconstruir a confiança na própria mobilidade com prática graduada e metas pequenas é fisioterapia. Não é conversa motivacional: é dose de exposição planejada.",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." },
+          { texto:"Concordar que é mais seguro ficar em casa e pedir que os filhos resolvam tudo por ela.",
+            certa:false, pontos:-15, delta:{tug:2.5},
+            fb:"Parece cuidado e é o contrário. Retirar a autonomia acelera o descondicionamento e aumenta o risco de queda em poucos meses, além de piorar o humor dela.",
+            fisio:"O papel aqui é devolver autonomia com segurança, não substituí-la.",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." },
+          { texto:"Encaminhar só para a psicologia e não mexer na parte motora.",
+            certa:false, pontos:7, delta:{},
+            fb:"O apoio psicológico ajuda e o encaminhamento é bem-vindo. Mas sozinho ele não resolve o componente de equilíbrio e força, que é a outra metade do problema.",
+            fisio:"",
+            fonte:"Doenças Crônicas e Longevidade, Fiocruz e Ministério da Saúde, 2023, p. 150." }
+        ]
+      },
+      {
+        titulo:"Cinco caixas de remédio",
+        situacao:"Organizando a caixinha dela, você conta cinco medicamentos diferentes em horários que ela mesma inventou. Ela relata tontura em alguns momentos do dia.",
+        opcoes:[
+          { texto:"Registrar a tontura e o número de medicamentos como fator de risco de queda, comunicar à equipe e encaminhar para revisão médica e farmacêutica, mantendo o programa de exercícios.",
+            certa:true, pontos:22, delta:{pas:-2},
+            fb:"Usar muitos medicamentos ao mesmo tempo é fator de risco de queda reconhecido, e tontura é pista importante. Quem revisa o esquema é o médico com o farmacêutico. O papel de quem percebeu é garantir que a informação chegue lá.",
+            fisio:"Identificar o risco, comunicar à equipe e seguir trabalhando equilíbrio e força — que reduzem o impacto funcional do problema enquanto a revisão não acontece.",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 13." },
+          { texto:"Orientar Neusa a cortar por conta própria um dos remédios da pressão, já que são muitos e ela sente tontura.",
+            certa:false, pontos:-20, delta:{pas:8},
+            fb:"Não. Suspender anti-hipertensivo sem avaliação médica descontrola a pressão e aumenta o risco cardiovascular. Nenhum profissional que não prescreveu pode orientar isso, e a paciente não deve fazer por conta própria. Veja o que aconteceu com a pressão dela.",
+            fisio:"Reconhecer o limite da própria atuação faz parte do trabalho. A observação vira encaminhamento, não conduta.",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Não comentar o assunto, porque medicação não é da fisioterapia.",
+            certa:false, pontos:0, delta:{},
+            fb:"Ajustar dose realmente não é. Mas perceber o risco e avisar a equipe é de todo mundo. Numa equipe em que cada um só olha a própria caixinha, a informação se perde.",
+            fisio:"",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 13." }
+        ]
+      },
+      {
+        titulo:"Três meses depois",
+        situacao:"Neusa já volta a sair acompanhada e refez o teste: 13,8 segundos. Ela pergunta se agora pode parar a fisioterapia, já que melhorou.",
+        opcoes:[
+          { texto:"Explicar que o ganho se perde se o estímulo parar, propor a continuidade em grupo de exercício na própria unidade e seguir reavaliando periodicamente.",
+            certa:true, pontos:28, delta:{pas:-3, tug:-1.5},
+            fb:"Força e equilíbrio se perdem quando o treino para — mais rápido em pessoa idosa. O grupo resolve dois problemas de uma vez: mantém o estímulo e devolve o convívio que ela tinha perdido.",
+            fisio:"Reavaliar com o mesmo teste, progredir a carga e planejar a alta para um grupo em vez de simplesmente encerrar é o que sustenta o resultado depois que o acompanhamento individual acaba.",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021; Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 8." },
+          { texto:"Dar alta e encerrar o acompanhamento, já que os números melhoraram.",
+            certa:false, pontos:5, delta:{tug:1.5},
+            fb:"A alta é legítima, mas alta sem plano de continuidade costuma significar voltar ao ponto de partida em poucos meses. Repare que o tempo dela já começou a subir de novo.",
+            fisio:"",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." },
+          { texto:"Manter exatamente os mesmos exercícios do primeiro dia, sem progredir.",
+            certa:false, pontos:6, delta:{tug:-0.3},
+            fb:"Sem aumento de carga e de complexidade, o ganho estaciona bem antes do que ela conseguiria. O corpo se adapta ao estímulo e para de responder.",
+            fisio:"",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." }
+        ]
+      }
+    ],
+    fecho:"Neusa voltou à feira. O que devolveu a rua para ela não foi um remédio novo: foi medir o risco, treinar equilíbrio e força, tirar os tapetes e quebrar o ciclo do medo. Os cinco medicamentos dela continuam lá, revisados por quem pode revisar."
+  },
+
+  /* ---------------- HIPERTENSÃO EM HOMEM SEM VÍNCULO COM A UBS ---------------- */
+  antonio: {
+    id:"antonio", nome:"Seu Antônio", inicial:"A", idade:52,
+    condicao:"Hipertensão recém-descoberta",
+    resumo:"Pedreiro. Nunca tinha entrado numa UBS. Descobriu a pressão alta numa campanha na praça e apareceu desconfiado, avisando logo que não tem tempo a perder. Fuma no intervalo da obra e bebe com os colegas no fim de semana.",
+    medidores:[
+      {meta:140, ch:"pas", rot:"Pressão sistólica", un:"mmHg", ini:156, melhor:"menor"},
+      {meta:90, ch:"pad", rot:"Pressão diastólica", un:"mmHg", ini:96, melhor:"menor"}
+    ],
+    rodadas:[
+      {
+        titulo:"A primeira vez na UBS",
+        situacao:"Antônio entra na sala e avisa de cara: \"Eu trabalho pesado o dia inteiro, não preciso de exercício nenhum. Vim porque mediram minha pressão na praça e mandaram vir.\"",
+        opcoes:[
+          { texto:"Acolher sem julgar, reconhecer que o trabalho dele é pesado de verdade, e combinar um retorno para conversar com calma sobre o que a pressão alta significa.",
+            certa:true, pontos:25, delta:{},
+            fb:"O que se ganha nesta consulta não é número, é vínculo. Homens têm menor adesão ao tratamento de doença crônica, e isso piora quando o primeiro contato com o serviço é ruim. Perder Antônio agora significa reencontrá-lo daqui a dez anos, com lesão de órgão-alvo.",
+            fisio:"Acolher sem desqualificar o trabalho da pessoa é o que mantém ela dentro do serviço. Sem isso, não existe conduta nenhuma para aplicar depois.",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 14 e 22." },
+          { texto:"Concordar que, se ele já se cuida trabalhando, não precisa voltar.",
+            certa:false, pontos:-15, delta:{pas:4, pad:3},
+            fb:"Isso empurra Antônio para fora do serviço na única oportunidade que existia. Ele tem 156 por 96 mmHg e nenhum acompanhamento. Veja o que acontece com a pressão de quem some.",
+            fisio:"",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 22." },
+          { texto:"Explicar com firmeza que ele está errado e repreendê-lo por nunca ter procurado a unidade.",
+            certa:false, pontos:5, delta:{},
+            fb:"O conteúdo até está certo, a forma inviabiliza. A não adesão costuma ser lida como teimosia da pessoa quando é resposta ao jeito como ela foi tratada. Ele não volta na próxima.",
+            fisio:"",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 14." }
+        ]
+      },
+      {
+        titulo:"\"Carregar tijolo já é exercício\"",
+        situacao:"Antônio voltou. E repete: \"Pedreiro não precisa de academia, eu subo escada com saco de cimento nas costas o dia inteiro.\"",
+        opcoes:[
+          { texto:"Explicar que o esforço do trabalho é irregular, sem controle de intensidade e sem recuperação planejada, e por isso não substitui a atividade estruturada — e propor 150 minutos por semana encaixados na rotina real dele.",
+            certa:true, pontos:28, delta:{pas:-5, pad:-3},
+            fb:"Este é o mito central do caso. O Guia de Atividade Física do Ministério da Saúde separa os domínios — trabalho, deslocamento, tarefas domésticas e lazer — e a recomendação de 150 a 300 minutos semanais de atividade moderada se refere à atividade estruturada, não ao esforço ocupacional. Trabalho pesado desgasta; exercício condiciona. Não são a mesma coisa.",
+            fisio:"Traduzir a recomendação da diretriz para a vida de quem sai da obra às 17h exausto é trabalho técnico. Prescrição que ignora a jornada não é cumprida.",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." },
+          { texto:"Concordar que carregar peso o dia todo já cumpre os minutos recomendados.",
+            certa:false, pontos:0, delta:{},
+            fb:"Confirma exatamente o que precisava ser desfeito. O esforço ocupacional é contabilizado à parte justamente porque não tem o efeito cardiovascular da atividade estruturada — e ainda vem com carga articular alta e nenhuma recuperação.",
+            fisio:"",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." },
+          { texto:"Prescrever treino de academia cinco vezes por semana, sem considerar a jornada dele.",
+            certa:false, pontos:6, delta:{pas:-1},
+            fb:"Tecnicamente defensável, na prática não acontece. Quem sai da obra às 17h não vai à academia cinco vezes por semana. Prescrição não cumprida vale zero.",
+            fisio:"",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021." }
+        ]
+      },
+      {
+        titulo:"O cigarro do intervalo",
+        situacao:"Ele conta que fuma uns oito cigarros por dia, quase todos nos intervalos da obra, \"pra dar uma parada e esfriar a cabeça\".",
+        opcoes:[
+          { texto:"Abordar sem sermão, explicar que o cigarro é fator de risco cardiovascular independente da pressão, e articular com a equipe o apoio para parar — usando a atividade física como aliada no manejo da fissura e do estresse.",
+            certa:true, pontos:22, delta:{pas:-2, pad:-1},
+            fb:"A cessação do tabagismo é medida central no manejo da hipertensão e o cigarro soma risco cardiovascular ao que a pressão já traz. O grupo de tabagismo da própria unidade é a porta natural, e o exercício ajuda no manejo da fissura.",
+            fisio:"Exercício e técnicas respiratórias apoiam quem está parando de fumar. O componente clínico da cessação é da equipe, e a articulação entre as duas coisas é o que faz funcionar.",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Não tocar no assunto, porque tabagismo não é da fisioterapia.",
+            certa:false, pontos:0, delta:{},
+            fb:"Fator de risco cardiovascular é assunto de toda a equipe. Quando cada profissional só fala da própria área, a pessoa recebe orientação picada e não muda nada.",
+            fisio:"",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 13." },
+          { texto:"Dizer que, agora que ele caminha, o exercício compensa o cigarro.",
+            certa:false, pontos:-12, delta:{pas:3},
+            fb:"Não compensa. Exercício e cigarro atuam por vias diferentes: um não anula o outro. Essa frase dá a Antônio uma licença para continuar fumando que a evidência não autoriza.",
+            fisio:"",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." }
+        ]
+      },
+      {
+        titulo:"A cerveja do sábado",
+        situacao:"\"Eu bebo, mas só sábado com o pessoal. Umas seis, sete latas. Não é igual quem bebe todo dia.\"",
+        opcoes:[
+          { texto:"Conversar sem moralismo, apresentar o limite recomendado e o efeito da redução sobre a pressão, e construir com ele uma meta que ele acredite que consegue cumprir.",
+            certa:true, pontos:20, delta:{pas:-4, pad:-2},
+            fb:"Reduzir o consumo de álcool baixa de 4 a 5 mmHg a pressão sistólica. O limite recomendado é de até 30 g de álcool por dia para homens, cerca de duas latas de cerveja. Seis ou sete num dia só está bem acima, mesmo sendo uma vez por semana.",
+            fisio:"Meta construída com a pessoa se cumpre; meta imposta faz a pessoa esconder o consumo, e aí o serviço perde a informação.",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Dizer que beber uma vez por semana não tem problema.",
+            certa:false, pontos:0, delta:{},
+            fb:"Seis a sete latas concentradas num dia ultrapassam com folga o limite recomendado. A conta é a quantidade, não o número de dias.",
+            fisio:"",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Fazer um discurso longo sobre os males do álcool e mandar parar de vez.",
+            certa:false, pontos:5, delta:{},
+            fb:"A recomendação é de redução com limite definido, não de abstinência para todo hipertenso. E o sermão tem efeito previsível: ele para de contar quanto bebe.",
+            fisio:"",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." }
+        ]
+      },
+      {
+        titulo:"Um mês depois, e a pressão não cedeu",
+        situacao:"Antônio voltou — o que já é vitória. Caminhou umas três vezes, achou difícil manter depois de um dia inteiro de obra. A pressão continua em 150 por 94.",
+        opcoes:[
+          { texto:"Reconhecer que ele voltou e que tentou, reduzir a meta para algo sustentável, e confirmar se ele está em acompanhamento médico regular da pressão.",
+            certa:true, pontos:25, delta:{pas:-4, pad:-2},
+            fb:"Três caminhadas em quatro semanas não é fracasso: é a linha de base a partir da qual se progride. Meta menor e cumprida vale mais que meta grande e abandonada. E a mudança de estilo de vida caminha junto do acompanhamento clínico, não no lugar dele.",
+            fisio:"Ajustar a dose do exercício para a realidade da pessoa, em vez de repetir a mesma prescrição que já falhou, é o que separa acompanhar de cobrar.",
+            fonte:"Guia de Atividade Física para a População Brasileira, Ministério da Saúde, 2021; Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Como ele está se esforçando, dizer que pode ir espaçando as consultas e tomar o remédio quando lembrar.",
+            certa:false, pontos:-18, delta:{pas:6, pad:4},
+            fb:"Não. Esforço em caminhada não autoriza uso irregular de medicação nem afastamento do acompanhamento. Com 150 por 94 mmHg, é exatamente o momento de manter os dois.",
+            fisio:"Quem ajusta esquema de medicação é o prescritor. \"Além do remédio\" quer dizer somado a ele.",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Cobrar dele a rotina que foi combinada e apontar que não cumpriu.",
+            certa:false, pontos:5, delta:{},
+            fb:"A cobrança é o caminho mais rápido para ele não voltar na próxima. Homens já têm menor adesão, e a abordagem punitiva aprofunda isso em vez de corrigir.",
+            fisio:"",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 14 e 22." }
+        ]
+      },
+      {
+        titulo:"Seis meses depois",
+        situacao:"Antônio virou frequentador da unidade e apareceu com um colega de obra a reboque, para medir a pressão dele também.",
+        opcoes:[
+          { texto:"Reconhecer o que ele se tornou, aproveitar para propor um grupo de caminhada com os colegas da obra e manter o acompanhamento dos três fatores: exercício, cigarro e álcool.",
+            certa:true, pontos:25, delta:{pas:-5, pad:-3},
+            fb:"Um homem de 52 anos que nunca tinha entrado numa UBS agora traz outro. Isso resolve a barreira de acesso masculina de um jeito que nenhuma campanha resolve, e o grupo transforma a mudança individual em hábito coletivo.",
+            fisio:"Conduzir grupo de exercício na unidade é atuação clássica da fisioterapia na Atenção Primária, e é o formato que sustenta adesão ao longo do tempo.",
+            fonte:"Panorama IEPS — Linhas de Cuidado de DCNT na APS, p. 8 e 22." },
+          { texto:"Atender o colega e deixar Antônio de lado, já que ele está bem.",
+            certa:false, pontos:5, delta:{pas:2},
+            fb:"Atender o colega é ótimo. Soltar Antônio porque melhorou é como dar alta na metade: hipertensão é condição crônica e o acompanhamento continua.",
+            fisio:"",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." },
+          { texto:"Aproveitar a melhora para sugerir que ele reduza sozinho a dose do remédio.",
+            certa:false, pontos:-20, delta:{pas:8, pad:5},
+            fb:"O mesmo erro, na versão mais tentadora: agora ele está bem. Ainda assim, quem reduz dose é o médico, olhando os números atuais. O que Antônio conquistou é o que torna essa conversa possível — com o prescritor.",
+            fisio:"",
+            fonte:"Diretriz Brasileira de Hipertensão Arterial, SBC, 2020." }
+        ]
+      }
+    ],
+    fecho:"Antônio nunca deixou de ser pedreiro nem parou de carregar peso. O que mudou foi entender que o esforço da obra desgasta e o exercício condiciona — e que as duas coisas, mais o remédio, cabem na mesma semana."
   }
 };
 
 
-var ORDEM = ["marta","jorge","camila"];
-var SIGLA = { marta:{s:"PA", leg:"Pressão"}, jorge:{s:"DM", leg:"Glicemia"}, camila:{s:"OB", leg:"Peso"} };
+var ORDEM = ["marta","jorge","camila","neusa","antonio"];
+var SIGLA = { marta:{s:"PA", leg:"Pressão"}, jorge:{s:"DM", leg:"Glicemia"}, camila:{s:"OB", leg:"Peso"},
+              neusa:{s:"EQ", leg:"Equilíbrio"}, antonio:{s:"AC", leg:"Acesso"} };
 var LETRA = ["A","B","C","D"];
+
+
+/* ---------------------------------------------------------------
+   Retratos ilustrados dos pacientes, desenhados em SVG.
+   Vetorial e embutido: nao pesa, nao depende de rede, escala sem
+   perder qualidade e respeita a paleta da identidade.
+   --------------------------------------------------------------- */
+var PESSOAS = {
+  marta:  { pele:"#C68B62", sombra:"#A9714C", cabelo:"#C9C9C4", corte:"curto-ondulado", oculos:true,  roupa:"#3BE08F", brinco:true  },
+  jorge:  { pele:"#7A4A2B", sombra:"#5E3720", cabelo:"#241C18", corte:"raspado",        oculos:false, roupa:"#79B8FF", bigode:true },
+  camila: { pele:"#A96C46", sombra:"#8A5334", cabelo:"#2B211C", corte:"cacheado",       oculos:false, roupa:"#FFD166", brinco:true },
+  neusa:  { pele:"#E0B190", sombra:"#C4906C", cabelo:"#EDEDE8", corte:"coque",          oculos:true,  roupa:"#C08BE0", brinco:true },
+  antonio:{ pele:"#8F5A34", sombra:"#6E4325", cabelo:"#2A211B", corte:"bone",           oculos:false, roupa:"#FF9E5E", barba:true  }
+};
+
+function retrato(k, tam){
+  var p = PESSOAS[k];
+  if(!p) return '';
+  var s = '<svg width="'+tam+'" height="'+tam+'" viewBox="0 0 100 100" aria-hidden="true" style="display:block;flex:none;border-radius:50%;background:#1B302A">';
+  s += '<defs><clipPath id="cp'+k+'"><circle cx="50" cy="50" r="50"/></clipPath></defs>';
+  s += '<g clip-path="url(#cp'+k+')">';
+
+  // ombros e roupa
+  s += '<path d="M14 100 C 16 80, 32 71, 50 71 C 68 71, 84 80, 86 100 Z" fill="'+p.roupa+'"/>';
+  s += '<path d="M50 71 L44 82 L50 88 L56 82 Z" fill="rgba(0,0,0,.14)"/>';
+  // pescoco
+  s += '<path d="M42 58 h16 v14 c0 4 -16 4 -16 0 Z" fill="'+p.sombra+'"/>';
+  // orelhas
+  s += '<ellipse cx="28" cy="45" rx="4.5" ry="6" fill="'+p.pele+'"/>';
+  s += '<ellipse cx="72" cy="45" rx="4.5" ry="6" fill="'+p.pele+'"/>';
+  // rosto
+  s += '<ellipse cx="50" cy="42" rx="22" ry="25" fill="'+p.pele+'"/>';
+
+  // cabelo, por tipo de corte
+  if(p.corte === "curto-ondulado"){
+    s += '<path d="M27 40 C 25 20, 40 13, 50 13 C 60 13, 75 20, 73 40 C 71 32, 66 27, 60 26 C 54 30, 44 30, 38 26 C 32 28, 28 32, 27 40 Z" fill="'+p.cabelo+'"/>';
+  } else if(p.corte === "raspado"){
+    s += '<path d="M28 38 C 28 21, 40 16, 50 16 C 60 16, 72 21, 72 38 C 68 28, 60 24, 50 24 C 40 24, 32 28, 28 38 Z" fill="'+p.cabelo+'"/>';
+  } else if(p.corte === "cacheado"){
+    s += '<g fill="'+p.cabelo+'">';
+    s += '<ellipse cx="50" cy="18" rx="20" ry="12"/>';
+    s += '<circle cx="30" cy="26" r="9"/><circle cx="70" cy="26" r="9"/>';
+    s += '<circle cx="26" cy="38" r="7.5"/><circle cx="74" cy="38" r="7.5"/>';
+    s += '<circle cx="36" cy="17" r="8"/><circle cx="64" cy="17" r="8"/>';
+    s += '</g>';
+  } else if(p.corte === "coque"){
+    s += '<circle cx="50" cy="11" r="9" fill="'+p.cabelo+'"/>';
+    s += '<path d="M28 40 C 27 21, 40 15, 50 15 C 60 15, 73 21, 72 40 C 69 30, 61 25, 50 25 C 39 25, 31 30, 28 40 Z" fill="'+p.cabelo+'"/>';
+  } else if(p.corte === "bone"){
+    s += '<path d="M30 38 C 30 20, 40 14, 50 14 C 60 14, 70 20, 70 38 Z" fill="#3A5C72"/>';
+    s += '<path d="M69 32 C 83 32, 91 35, 91 38.5 C 91 40.5, 82 40, 69 39 Z" fill="#2E4A5C"/>';
+    s += '<path d="M28.5 32 h43 a2.5 2.5 0 0 1 0 7 h-43 a2.5 2.5 0 0 1 0 -7 Z" fill="#2E4A5C"/>';
+  }
+
+  // sobrancelhas
+  s += '<path d="M39 36 q5 -3 10 -0.5" stroke="'+p.cabelo+'" stroke-width="2.4" fill="none" stroke-linecap="round"/>';
+  s += '<path d="M51 35.5 q5 -2.5 10 0.5" stroke="'+p.cabelo+'" stroke-width="2.4" fill="none" stroke-linecap="round"/>';
+  // olhos
+  s += '<circle cx="43" cy="43" r="2.6" fill="#20140E"/>';
+  s += '<circle cx="57" cy="43" r="2.6" fill="#20140E"/>';
+  s += '<circle cx="43.8" cy="42.2" r=".9" fill="#fff" opacity=".85"/>';
+  s += '<circle cx="57.8" cy="42.2" r=".9" fill="#fff" opacity=".85"/>';
+  // nariz
+  s += '<path d="M50 45 q-2.5 5 0.5 6.5" stroke="'+p.sombra+'" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+  // boca, sorriso discreto
+  s += '<path d="M44 56 q6 4.5 12 0" stroke="#6B3B2A" stroke-width="2.2" fill="none" stroke-linecap="round"/>';
+
+  if(p.bigode) s += '<path d="M43 54 q7 -3 14 0" stroke="'+p.cabelo+'" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  if(p.barba){
+    s += '<path d="M31 46 C 32 62, 40 68, 50 68 C 60 68, 68 62, 69 46 C 66 58, 60 62, 50 62 C 40 62, 34 58, 31 46 Z" fill="'+p.cabelo+'" opacity=".85"/>';
+  }
+  if(p.oculos){
+    s += '<g stroke="#2B3F52" stroke-width="2" fill="rgba(255,255,255,.14)">';
+    s += '<rect x="34" y="38" width="16" height="12" rx="5"/>';
+    s += '<rect x="50" y="38" width="16" height="12" rx="5"/>';
+    s += '</g>';
+    s += '<path d="M28 41 h6 M66 41 h6" stroke="#2B3F52" stroke-width="2" fill="none"/>';
+  }
+  if(p.brinco){
+    s += '<circle cx="28" cy="51" r="2.2" fill="#3BE08F"/>';
+    s += '<circle cx="72" cy="51" r="2.2" fill="#3BE08F"/>';
+  }
+  s += '</g></svg>';
+  return s;
+}
 
 /* logotipo: halter cujos discos sao capsulas de medicamento, com tracos de movimento.
    O exercicio entra no plano de cuidado junto com a medicacao, nao no lugar dela. */
@@ -606,7 +1036,7 @@ function telaInicio(){
   h += marca(72, null, null, true);
   h += '<h1 style="margin-top:20px">ALÉM DO<br>REMÉDIO</h1>';
   h += '<p class="tagline">Movimento é conduta</p>';
-  h += '<p class="lead" style="margin-top:20px">O que a Fisioterapia faz na Atenção Primária no cuidado da hipertensão, do diabetes e da obesidade.</p>';
+  h += '<p class="lead" style="margin-top:20px">O que a Fisioterapia faz na Atenção Primária no cuidado da hipertensão, do diabetes e da obesidade. Cinco pessoas, cinco minutos cada.</p>';
   h += '</div>';
 
   h += '<div class="carta" style="margin-top:26px">';
@@ -633,7 +1063,7 @@ function telaInicio(){
     var c = CASOS[k], pronto = E.feitos.indexOf(k)>=0;
     h += '<button class="btn '+(pronto?'discreto':'contorno')+'" data-acao="caso" data-caso="'+k+'" style="text-align:left;padding:18px 22px;min-height:76px">';
     h += '<span style="display:flex;align-items:center;gap:14px">';
-    h += '<span class="ini'+(pronto?'':' vazio')+'" style="width:44px;height:44px;font-size:18px;border-radius:15px">'+c.inicial+'</span>';
+    h += retrato(k, 52);
     h += '<span style="flex:1"><span class="mono" style="font-size:10px;letter-spacing:.16em;color:var(--suave);display:block">CASO 0'+(idx+1)+' · UBS'+(pronto?' · CONCLUÍDO':'')+'</span>';
     h += '<span style="display:block;font-size:16px;margin-top:3px">'+esc(c.nome)+', '+c.idade+' anos</span>';
     h += '<span class="mono" style="font-size:11px;color:var(--verde);display:block;margin-top:2px">'+esc(c.condicao).toUpperCase()+'</span>';
@@ -657,7 +1087,7 @@ function telaRodada(){
   h += '<div class="trilho" style="margin-bottom:20px"><i style="width:'+Math.round((E.rodada/c.rodadas.length)*100+4)+'%"></i></div>';
 
   h += '<div class="carta">';
-  h += '<div class="paciente"><span class="ini">'+c.inicial+'</span><span>';
+  h += '<div class="paciente">' + retrato(E.caso, 60) + '<span>';
   h += '<span style="font-size:17px;font-weight:700;display:block">'+esc(c.nome)+', '+c.idade+' anos</span>';
   h += '<span class="mono" style="font-size:11px;color:var(--verde)">'+esc(c.condicao).toUpperCase()+'</span></span></div>';
   h += ficha(c, false);
@@ -719,7 +1149,7 @@ function telaResultado(){
   var faixa = p>=85 ? "Conduta muito boa" : p>=60 ? "Conduta razoável, com furos" : "Vale refazer este caso";
   var h = '';
   h += '<p class="rotulo">Fim do acompanhamento</p>';
-  h += '<h1>'+esc(c.nome.toUpperCase())+'</h1>';
+  h += '<div class="paciente">' + retrato(E.caso, 64) + '<span><h1 style="font-size:30px">'+esc(c.nome.toUpperCase())+'</h1></span></div>';
   h += '<div class="placar" style="margin-top:22px">'+Math.max(0,E.pontos)+'<span> pts</span></div>';
   h += '<div class="trilho" style="height:14px;margin:14px 0 10px"><i style="width:'+Math.max(p,3)+'%"></i></div>';
   h += '<p class="sub">'+esc(faixa)+' — '+E.acertos+' de '+c.rodadas.length+' consultas com a melhor conduta.</p>';
@@ -750,10 +1180,10 @@ function telaFinal(){
   var h = '';
   h += '<p class="rotulo">Fechamento</p>';
   h += marca(64, null, null, true);
-  h += '<h1 style="margin-top:18px">VOCÊ<br>ATENDEU<br>OS TRÊS</h1>';
+  h += '<h1 style="margin-top:18px">VOCÊ<br>ATENDEU<br>OS CINCO</h1>';
   h += '<p class="tagline">Movimento é conduta</p>';
   h += '<div class="carta" style="margin-top:26px">'+medalhas()+'</div>';
-  h += '<p class="lead">Repare no que os três casos têm em comum: em nenhum deles a conduta certa foi mexer no remédio. Em todos, o que moveu os números foi alguém avaliar a pessoa e transformar orientação em plano possível.</p>';
+  h += '<p class="lead">Repare no que os cinco casos têm em comum: em nenhum deles a conduta certa foi mexer no remédio. Em todos, o que moveu os números foi alguém avaliar a pessoa e transformar orientação em plano possível.</p>';
 
   h += '<div class="carta">';
   h += '<p class="rotulo">O que a Fisioterapia fez aqui</p>';
@@ -798,7 +1228,7 @@ function telaCreditos(){
   h += '<p class="rotulo">Ficha do trabalho</p>';
   h += '<p class="sub"><b style="color:var(--verde)">Objetivo educacional:</b> ao terminar os três casos, a pessoa deve saber apontar qual conduta não medicamentosa altera qual parâmetro, e em quanto.</p>';
   h += '<p class="sub"><b style="color:var(--verde)">Público:</b> a partir de aproximadamente 14 anos, leitura em português simples.</p>';
-  h += '<p class="sub"><b style="color:var(--verde)">Duração:</b> cerca de 5 minutos por caso, 15 minutos os três.</p>';
+  h += '<p class="sub"><b style="color:var(--verde)">Duração:</b> cerca de 5 a 6 minutos por atendimento. São 5 pessoas e 30 consultas no total, feitas em blocos separados.</p>';
   h += '<p class="sub"><b style="color:var(--verde)">Como avaliar se funcionou:</b> aplicar as mesmas 5 perguntas antes e depois de jogar e comparar o número de acertos. O placar de cada caso já serve de medida.</p>';
   h += '</div>';
 
