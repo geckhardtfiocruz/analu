@@ -148,6 +148,14 @@ p{margin:0 0 14px;}
 ul{margin:0 0 14px;padding-left:20px;} li{margin-bottom:10px;line-height:1.5;}
 .rodape{text-align:center;font-family:'JetBrainsMono',monospace;font-size:10px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--suave);margin-top:28px;line-height:2;}
+/* painel de dados de uso */
+.numeros{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.numero{background:var(--linha);border-radius:16px;padding:14px 16px;min-width:0;}
+.numero b{display:block;font-family:'ArchivoBlack',Impact,sans-serif;font-weight:400;font-size:30px;line-height:1;color:var(--verde);}
+.numero span{display:block;margin-top:6px;font-family:'JetBrainsMono',monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--suave);}
+.linha-dado{font-size:14px;line-height:1.45;color:var(--corpo);margin:0 0 4px;}
+details{margin-top:6px;} summary{cursor:pointer;font-family:'JetBrainsMono',monospace;font-size:12px;color:var(--verde);padding:8px 0;}
 @media (min-width:560px){ h1{font-size:56px;} #app{padding:36px 26px 70px;} }
 </style>
 </head>
@@ -983,6 +991,47 @@ var E = {};
 function zerar(){ E = { tela:"inicio", caso:null, rodada:0, escolha:null, med:{}, pontos:0, maxPontos:0, feitos:[], acertos:0, ultimoDelta:null }; }
 zerar();
 
+/* ------------------ registro de uso (anônimo) ----------------------------
+   Grava acessos e respostas sem identificar ninguém. Cada registro fica
+   primeiro neste aparelho; com DADOS_URL preenchido, é enviado ao painel
+   geral quando houver internet. Se gravar ou enviar falhar, o jogo segue
+   igual. Contrato do serviço: docs/registro-de-dados.md */
+var DADOS_URL = "";
+var CH_HIST = "alemdoremedio.registros", CH_FILA = "alemdoremedio.fila", LIMITE = 3000;
+
+function novoId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+var SESSAO = novoId();
+function lerLista(ch){
+  try{ var v = JSON.parse(localStorage.getItem(ch) || "[]"); return Array.isArray(v) ? v : []; }
+  catch(e){ return []; }
+}
+function gravarLista(ch, l){ try{ localStorage.setItem(ch, JSON.stringify(l.slice(-LIMITE))); }catch(e){} }
+
+function registrar(tipo, extra){
+  var r = { id:novoId(), sessao:SESSAO, tipo:tipo, quando:new Date().toISOString() };
+  for(var k in extra){ if(Object.prototype.hasOwnProperty.call(extra,k)) r[k] = extra[k]; }
+  var h = lerLista(CH_HIST); h.push(r); gravarLista(CH_HIST, h);
+  if(DADOS_URL){ var f = lerLista(CH_FILA); f.push(r); gravarLista(CH_FILA, f); enviar(); }
+}
+
+var enviando = false;
+function enviar(){
+  if(!DADOS_URL || enviando || typeof fetch !== "function" || navigator.onLine === false) return;
+  var lote = lerLista(CH_FILA).slice(0, 200);
+  if(!lote.length) return;
+  enviando = true;
+  fetch(DADOS_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+                     body:JSON.stringify({registros:lote}) })
+    .then(function(res){
+      if(!res.ok) throw new Error("envio");
+      var ids = {}; lote.forEach(function(r){ ids[r.id] = 1; });
+      gravarLista(CH_FILA, lerLista(CH_FILA).filter(function(r){ return !ids[r.id]; }));
+      enviando = false; enviar();
+    })
+    .catch(function(){ enviando = false; });
+}
+window.addEventListener("online", enviar);
+
 function pontosMaximos(c){
   var t=0;
   c.rodadas.forEach(function(r){ var m=0; r.opcoes.forEach(function(o){ if(o.pontos>m) m=o.pontos; }); t+=m; });
@@ -1074,7 +1123,8 @@ function telaInicio(){
     h += '<button class="btn principal" data-acao="final" style="animation:pulso 2.8s ease-in-out infinite">VER O FECHAMENTO</button>';
   }
   h += '<button class="btn discreto" data-acao="creditos">Fontes e ficha do trabalho</button>';
-  h += '<div class="rodape">Funciona sem internet · sem som · não guarda dados</div>';
+  h += '<button class="btn discreto" data-acao="dados">Dados de uso</button>';
+  h += '<div class="rodape">Funciona sem internet · sem som · registra respostas sem identificar ninguém</div>';
   return h;
 }
 
@@ -1143,9 +1193,11 @@ function telaFeedback(){
   return h;
 }
 
+function percentualCaso(){ return E.maxPontos>0 ? Math.max(0, Math.round((E.pontos/E.maxPontos)*100)) : 0; }
+
 function telaResultado(){
   var c = CASOS[E.caso];
-  var p = E.maxPontos>0 ? Math.max(0, Math.round((E.pontos/E.maxPontos)*100)) : 0;
+  var p = percentualCaso();
   var faixa = p>=85 ? "Conduta muito boa" : p>=60 ? "Conduta razoável, com furos" : "Vale refazer este caso";
   var h = '';
   h += '<p class="rotulo">Fim do acompanhamento</p>';
@@ -1232,9 +1284,192 @@ function telaCreditos(){
   h += '<p class="sub"><b style="color:var(--verde)">Como avaliar se funcionou:</b> aplicar as mesmas 5 perguntas antes e depois de jogar e comparar o número de acertos. O placar de cada caso já serve de medida.</p>';
   h += '</div>';
 
+  h += '<div class="carta">';
+  h += '<p class="rotulo">Dados de uso</p>';
+  h += '<p class="sub">O jogo registra cada acesso, cada resposta e o placar de cada caso, sem nome, e-mail ou localização. Os números ficam abertos a todos no painel Dados de uso e servem para avaliar o projeto.</p>';
+  h += '</div>';
+
   h += '<div class="aviso"><b>Aviso</b>Material educativo. Não é orientação clínica individual e não substitui consulta, avaliação profissional nem o tratamento prescrito.</div>';
   h += '<button class="btn principal" data-acao="voltar">VOLTAR</button>';
+  h += '<button class="btn discreto" data-acao="dados">Dados de uso</button>';
   return h;
+}
+
+/* --------------------------- painel de dados ----------------------------- */
+var PAINEL = { regs:[] };
+
+function telaDados(){
+  var h = '';
+  h += '<p class="rotulo">Painel aberto · dados anônimos</p>';
+  h += '<h1 style="font-size:36px">DADOS<br>DE USO</h1>';
+  h += '<div id="painel" style="margin-top:22px"><p class="sub">Carregando…</p></div>';
+  h += '<button class="btn contorno" data-acao="dados">Atualizar</button>';
+  h += '<button class="btn discreto" data-acao="csv">Baixar planilha (CSV)</button>';
+  h += '<button class="btn principal" data-acao="voltar">VOLTAR AO INÍCIO</button>';
+  return h;
+}
+
+function juntar(a, b){
+  var vistos = {}, out = [];
+  a.concat(b).forEach(function(r){ if(r && r.id && !vistos[r.id]){ vistos[r.id] = 1; out.push(r); } });
+  return out;
+}
+
+function carregarPainel(){
+  var local = lerLista(CH_HIST);
+  if(!DADOS_URL || typeof fetch !== "function"){ montarPainel(local, "local"); return; }
+  fetch(DADOS_URL + (DADOS_URL.indexOf("?")<0 ? "?" : "&") + "t=" + Date.now())
+    .then(function(res){ if(!res.ok) throw new Error("leitura"); return res.json(); })
+    .then(function(j){
+      var l = Array.isArray(j) ? j : (j && Array.isArray(j.registros) ? j.registros : []);
+      montarPainel(juntar(l, lerLista(CH_FILA)), "geral");
+    })
+    .catch(function(){ montarPainel(local, "falha"); });
+}
+
+/* Registros vindos de fora são tratados como não confiáveis: só entra o que
+   corresponde a caso, consulta e alternativa que existem no jogo. */
+function validos(regs){
+  return regs.filter(function(r){
+    if(!r || typeof r.quando !== "string" || isNaN(new Date(r.quando).getTime())) return false;
+    if(r.tipo === "acesso" || r.tipo === "jogo_completo") return true;
+    var c = CASOS[r.caso]; if(!c) return false;
+    if(r.tipo === "inicio_caso") return true;
+    if(r.tipo === "fim_caso") return typeof r.pct === "number" && typeof r.pontos === "number";
+    if(r.tipo === "resposta"){
+      var rd = c.rodadas[(r.consulta|0)-1];
+      return !!rd && LETRA.indexOf(r.letra) >= 0 && LETRA.indexOf(r.letra) < rd.opcoes.length;
+    }
+    return false;
+  });
+}
+
+function barra(rot, valor, pctv, risco){
+  return '<div class="ind"><div class="top"><span>'+rot+'</span><b class="'+(risco?'risco':'ok')+'">'+valor+'</b></div>'
+       + '<div class="trilho"><i class="'+(risco?'risco':'')+'" style="width:'+Math.max(Math.min(pctv,100),3)+'%"></i></div></div>';
+}
+
+function montarPainel(regsBrutos, origem){
+  var alvo = document.getElementById("painel");
+  if(E.tela !== "dados" || !alvo) return;
+  var regs = validos(regsBrutos);
+  PAINEL.regs = regs;
+
+  var acessos = 0, completos = 0, dias = {}, porCaso = {}, porConsulta = {}, riscos = {};
+  ORDEM.forEach(function(k){ porCaso[k] = {ini:0, fim:0, somaPct:0, somaPts:0}; });
+  regs.forEach(function(r){
+    if(r.tipo === "acesso"){
+      acessos++;
+      var d = new Date(r.quando), dia = d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+      dias[dia] = (dias[dia]||0) + 1;
+    }
+    else if(r.tipo === "jogo_completo") completos++;
+    else if(r.tipo === "inicio_caso") porCaso[r.caso].ini++;
+    else if(r.tipo === "fim_caso"){ var pc = porCaso[r.caso]; pc.fim++; pc.somaPct += r.pct; pc.somaPts += r.pontos; }
+    else if(r.tipo === "resposta"){
+      var ch = r.caso+"|"+r.consulta;
+      var q = porConsulta[ch] || (porConsulta[ch] = {caso:r.caso, consulta:r.consulta|0, total:0, certas:0, risco:0});
+      var o = CASOS[r.caso].rodadas[q.consulta-1].opcoes[LETRA.indexOf(r.letra)];
+      q.total++;
+      if(o.certa) q.certas++;
+      if(o.pontos < 0){ q.risco++; var cr = ch+"|"+r.letra; riscos[cr] = (riscos[cr]||0) + 1; }
+    }
+  });
+  var iniciados = 0, concluidos = 0;
+  ORDEM.forEach(function(k){ iniciados += porCaso[k].ini; concluidos += porCaso[k].fim; });
+
+  var h = '';
+  if(origem === "geral") h += '<p class="sub">Dados de todos os jogadores.</p>';
+  else if(origem === "falha") h += '<div class="aviso"><b>Sem conexão com o painel geral</b>Mostrando só as partidas feitas neste aparelho.</div>';
+  else h += '<div class="aviso"><b>Painel geral ainda não ligado</b>Mostrando só as partidas feitas neste aparelho.</div>';
+
+  h += '<div class="numeros" style="margin-bottom:14px">';
+  [[acessos,"Acessos"],[iniciados,"Casos iniciados"],[concluidos,"Casos concluídos"],[completos,"Jogos completos"]].forEach(function(n){
+    h += '<div class="numero"><b>'+n[0]+'</b><span>'+n[1]+'</span></div>';
+  });
+  h += '</div>';
+
+  if(!regs.length){
+    alvo.innerHTML = h + '<p class="sub">Ainda não há registros.</p>';
+    return;
+  }
+
+  /* acessos nos últimos 14 dias */
+  var hoje = new Date(), lista = [], maxDia = 1;
+  for(var i=13;i>=0;i--){
+    var d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()-i);
+    var chave = d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+    var n = dias[chave]||0; if(n>maxDia) maxDia = n;
+    lista.push([("0"+d.getDate()).slice(-2)+"/"+("0"+(d.getMonth()+1)).slice(-2), n]);
+  }
+  h += '<div class="carta"><p class="rotulo">Acessos nos últimos 14 dias</p><div class="ficha">';
+  lista.forEach(function(x){ h += barra(x[0], x[1], x[1]/maxDia*100, false); });
+  h += '</div></div>';
+
+  /* por caso */
+  h += '<div class="carta"><p class="rotulo">Resultado por caso</p><div class="ficha">';
+  ORDEM.forEach(function(k){
+    var pc = porCaso[k], media = pc.fim ? Math.round(pc.somaPct/pc.fim) : 0;
+    h += barra(esc(CASOS[k].nome), pc.fim ? media+'%' : '—', media, pc.fim && media<60);
+    h += '<p class="linha-dado mono" style="font-size:11px;color:var(--suave)">iniciados: '+pc.ini+' · concluídos: '+pc.fim
+       + (pc.fim ? ' · média '+Math.round(pc.somaPts/pc.fim)+' pts' : '')+'</p>';
+  });
+  h += '</div></div>';
+
+  /* consultas com menos acerto */
+  var qs = Object.keys(porConsulta).map(function(k){ return porConsulta[k]; });
+  qs.forEach(function(q){ q.taxa = Math.round(q.certas/q.total*100); });
+  var piores = qs.slice().sort(function(a,b){ return a.taxa-b.taxa || b.total-a.total; }).slice(0,5);
+  function nomeConsulta(q){ return esc(CASOS[q.caso].nome)+' · consulta '+q.consulta+': '+esc(CASOS[q.caso].rodadas[q.consulta-1].titulo); }
+  h += '<div class="carta"><p class="rotulo">Consultas com menos acerto</p><div class="ficha">';
+  piores.forEach(function(q){
+    h += barra(nomeConsulta(q), q.taxa+'%', q.taxa, q.taxa<60);
+    h += '<p class="linha-dado mono" style="font-size:11px;color:var(--suave)">respostas: '+q.total+' · condutas de risco: '+q.risco+'</p>';
+  });
+  h += '</div></div>';
+
+  /* condutas de risco mais escolhidas */
+  var rs = Object.keys(riscos).sort(function(a,b){ return riscos[b]-riscos[a]; }).slice(0,5);
+  h += '<div class="carta"><p class="rotulo">Condutas de risco mais escolhidas</p>';
+  if(!rs.length) h += '<p class="sub">Nenhuma conduta de risco escolhida até agora.</p>';
+  rs.forEach(function(k){
+    var p = k.split("|"), c = CASOS[p[0]], o = c.rodadas[(p[1]|0)-1].opcoes[LETRA.indexOf(p[2])];
+    h += '<p class="linha-dado"><b style="color:var(--coral)">'+riscos[k]+'×</b> · '+esc(c.nome)+', consulta '+p[1]+' · '+esc(o.texto)+'</p>';
+  });
+  h += '</div>';
+
+  /* todas as consultas */
+  h += '<div class="carta"><p class="rotulo">Todas as consultas</p>';
+  ORDEM.forEach(function(k){
+    var c = CASOS[k];
+    h += '<details><summary>'+esc(c.nome)+'</summary><div class="ficha">';
+    c.rodadas.forEach(function(rd, i){
+      var q = porConsulta[k+"|"+(i+1)];
+      h += barra((i+1)+'. '+esc(rd.titulo), q ? q.taxa+'% · '+q.total : '—', q ? q.taxa : 0, q && q.taxa<60);
+    });
+    h += '</div></details>';
+  });
+  h += '</div>';
+
+  alvo.innerHTML = h;
+}
+
+function baixarCsv(){
+  var cols = ["id","sessao","tipo","quando","caso","consulta","letra","pontos","pct","acertos"];
+  var linhas = [cols.join(";")];
+  PAINEL.regs.forEach(function(r){
+    linhas.push(cols.map(function(c){
+      var v = r[c] === undefined || r[c] === null ? "" : String(r[c]);
+      return /[;"\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v;
+    }).join(";"));
+  });
+  try{
+    var url = URL.createObjectURL(new Blob(["﻿"+linhas.join("\n")], {type:"text/csv;charset=utf-8"}));
+    var a = document.createElement("a");
+    a.href = url; a.download = "alem-do-remedio-dados.csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }catch(e){}
 }
 
 /* ---------------------------- controle ---------------------------------- */
@@ -1245,9 +1480,11 @@ function render(){
   else if(t==="feedback") h = telaFeedback();
   else if(t==="resultado") h = telaResultado();
   else if(t==="final") h = telaFinal();
+  else if(t==="dados") h = telaDados();
   else h = telaCreditos();
   document.getElementById("app").innerHTML = h;
   window.scrollTo(0,0);
+  if(t==="dados") carregarPainel();
 }
 
 function iniciarCaso(k){
@@ -1256,6 +1493,7 @@ function iniciarCaso(k){
   E.maxPontos = pontosMaximos(c); E.med = {}; E.ultimoDelta = null;
   c.medidores.forEach(function(m){ E.med[m.ch] = m.ini; });
   E.tela = "rodada";
+  registrar("inicio_caso", {caso:k});
 }
 
 document.addEventListener("click", function(ev){
@@ -1268,6 +1506,7 @@ document.addEventListener("click", function(ev){
     var i = parseInt(b.getAttribute("data-i"),10);
     var c = CASOS[E.caso], o = c.rodadas[E.rodada].opcoes[i];
     E.escolha = i; E.pontos += o.pontos; if(o.certa) E.acertos++;
+    registrar("resposta", {caso:E.caso, consulta:E.rodada+1, letra:LETRA[i], pontos:o.pontos});
     E.ultimoDelta = {};
     for(var ch in o.delta){
       if(Object.prototype.hasOwnProperty.call(o.delta,ch)){
@@ -1280,7 +1519,11 @@ document.addEventListener("click", function(ev){
   else if(a==="proxima"){
     var cc = CASOS[E.caso];
     if(E.rodada >= cc.rodadas.length-1){
-      if(E.feitos.indexOf(E.caso)<0) E.feitos.push(E.caso);
+      registrar("fim_caso", {caso:E.caso, pontos:E.pontos, pct:percentualCaso(), acertos:E.acertos});
+      if(E.feitos.indexOf(E.caso)<0){
+        E.feitos.push(E.caso);
+        if(E.feitos.length === ORDEM.length) registrar("jogo_completo", {});
+      }
       E.tela = "resultado";
     } else { E.rodada++; E.tela = "rodada"; }
   }
@@ -1288,10 +1531,14 @@ document.addEventListener("click", function(ev){
   else if(a==="voltar"){ E.tela = "inicio"; }
   else if(a==="final"){ E.tela = "final"; }
   else if(a==="creditos"){ E.tela = "creditos"; }
+  else if(a==="dados"){ E.tela = "dados"; }
+  else if(a==="csv"){ baixarCsv(); return; }
 
   render();
 });
 
+registrar("acesso", {});
+enviar();
 render();
 </script>
 </body>
